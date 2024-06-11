@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
-    private PlayerControlls controls;
+    private Player player;
+
+    private PlayerControlls controlls;
     private CharacterController characterController;
     private Animator animator;
 
@@ -27,17 +29,16 @@ public class Player_Movement : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 aimInput;
 
-    private void Awake()
-    {
-        AssignInputEvents();
-    }
-
     private void Start()
     {
+        player = GetComponent<Player>();
+
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
 
         speed = walkSpeed;
+
+        AssignInputEvents();
     }
 
     private void Update()
@@ -45,12 +46,6 @@ public class Player_Movement : MonoBehaviour
         ApplyMovement();
         AimTowardsMouse();
         AnimatorControllers();
-    }
-
-    private void Shoot()
-    {
-        animator.SetTrigger("Fire");
-        Debug.Log("Fire");
     }
 
     private void AnimatorControllers()
@@ -61,7 +56,7 @@ public class Player_Movement : MonoBehaviour
         animator.SetFloat("xVelocity", xVelocity, 0.1f, Time.deltaTime);
         animator.SetFloat("zVelocity", zVelocity, 0.1f, Time.deltaTime);
 
-        bool playRunAnimation = isRunning && movementDirection.magnitude > 0; 
+        bool playRunAnimation = isRunning && movementDirection.magnitude > 0;
         animator.SetBool("isRunning", playRunAnimation);
     }
 
@@ -107,38 +102,24 @@ public class Player_Movement : MonoBehaviour
 
     private void AssignInputEvents()
     {
-        controls = new PlayerControlls();
+        controlls = player.controlls;
 
-        controls.Character.Fire.performed += context => Shoot();
+        controlls.Character.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
+        controlls.Character.Movement.canceled += context => moveInput = Vector2.zero;
 
-        controls.Character.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
-        controls.Character.Movement.canceled += context => moveInput = Vector2.zero;
+        controlls.Character.Aim.performed += context => aimInput = context.ReadValue<Vector2>();
+        controlls.Character.Aim.canceled += controls => aimInput = Vector2.zero;
 
-        controls.Character.Aim.performed += context => aimInput = context.ReadValue<Vector2>();
-        controls.Character.Aim.canceled += controls => aimInput = Vector2.zero;
-
-        controls.Character.Run.performed += context =>
+        controlls.Character.Run.performed += context =>
         {
             speed = runSpeed;
             isRunning = true;
         };
 
-        controls.Character.Run.canceled += controls =>
+        controlls.Character.Run.canceled += controls =>
         {
             speed = walkSpeed;
             isRunning = false;
         };
-    }
-
-    // Acitve
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-
-    // Inactive
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 }
