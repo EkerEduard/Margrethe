@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player_VisualController : MonoBehaviour
 {
+    private Animator anim;
+
     [SerializeField] private Transform[] gunTransforms;
 
     [SerializeField] private Transform pistol;
@@ -19,10 +21,13 @@ public class Player_VisualController : MonoBehaviour
 
     [Header("Left Hand IK")]
     [SerializeField] private Transform leftHand;
+    [SerializeField] private Transform leftHint;
 
     private void Start()
     {
-        SwitchOn(autoRifle);
+        SwitchOn(pistol);
+
+        anim = GetComponentInParent<Animator>();
     }
 
     //Временная мера
@@ -31,36 +36,43 @@ public class Player_VisualController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SwitchOn(pistol);
+            SwitchAnimationLayer(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwitchOn(revolver);
+            SwitchAnimationLayer(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwitchOn(autoRifle);
+            SwitchAnimationLayer(1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             SwitchOn(shotgun);
+            SwitchAnimationLayer(2);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             SwitchOn(rifle);
+            SwitchAnimationLayer(3);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             SwitchOn(tommygun);
+            SwitchAnimationLayer(5);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             SwitchOn(machinegun);
+            SwitchAnimationLayer(4);
         }
     }
 
@@ -84,8 +96,22 @@ public class Player_VisualController : MonoBehaviour
     private void AttachLeftHand()
     {
         Transform targetTransform = currentGun.GetComponentInChildren<LeftHand_TargetTransform>().transform;
+        Transform hintTransform = currentGun.GetComponentInChildren<LeftHand_HintTransform>().transform;
 
         leftHand.localPosition = targetTransform.localPosition;
         leftHand.localRotation = targetTransform.localRotation;
+
+        leftHint.localPosition = hintTransform.localPosition;
+        leftHint.localRotation = hintTransform.localRotation;
+    }
+
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < anim.layerCount; i++)
+        {
+            anim.SetLayerWeight(i, 0);
+        }
+
+        anim.SetLayerWeight(layerIndex, 1);
     }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ab047d444c4daac419d5376a7ab79a61
+guid: 1bdcd616adf26294bb0cc8626cce5811
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,13 +33,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Tommygun_Fire-Idle
+      name: Pistol_Fire-Idle
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 1
       wrapMode: 0
-      orientationOffsetY: 0
+      orientationOffsetY: 12
       level: 0
       cycleOffset: 0
       loop: 0

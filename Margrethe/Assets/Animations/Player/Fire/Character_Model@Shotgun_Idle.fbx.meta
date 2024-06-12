@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 41a1015860710bf44a9ca60e2e338d5f
+guid: 71c98514e89389c4c857f643a086159f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Machinegun_Fire-Idle
+      name: Shotgun_Fire-Idle
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
