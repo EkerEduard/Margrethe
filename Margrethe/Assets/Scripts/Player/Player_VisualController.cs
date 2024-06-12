@@ -15,6 +15,15 @@ public class Player_VisualController : MonoBehaviour
     [SerializeField] private Transform tommygun;
     [SerializeField] private Transform machinegun;
 
+    private Transform currentGun; // Текущее оружие
+
+    [Header("Left Hand IK")]
+    [SerializeField] private Transform leftHand;
+
+    private void Start()
+    {
+        SwitchOn(autoRifle);
+    }
 
     //Временная мера
     private void Update()
@@ -59,7 +68,9 @@ public class Player_VisualController : MonoBehaviour
     {
         SwitchOffGuns();
         gunTransform.gameObject.SetActive(true);
+        currentGun = gunTransform;
 
+        AttachLeftHand();
     }
 
     private void SwitchOffGuns()
@@ -70,4 +81,11 @@ public class Player_VisualController : MonoBehaviour
         }
     }
 
+    private void AttachLeftHand()
+    {
+        Transform targetTransform = currentGun.GetComponentInChildren<LeftHand_TargetTransform>().transform;
+
+        leftHand.localPosition = targetTransform.localPosition;
+        leftHand.localRotation = targetTransform.localRotation;
+    }
 }
