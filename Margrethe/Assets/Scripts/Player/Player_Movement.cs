@@ -13,21 +13,18 @@ public class Player_Movement : MonoBehaviour
     private Animator animator;
 
     [Header("Movement info")]
-    private float speed; // Скорость по умолчанию
     [SerializeField] private float walkSpeed; // Скорость ходьбы
     [SerializeField] private float runSpeed; // Скорость бега
-    [SerializeField] private float gravityScale = 9.81f;
-    private Vector3 movementDirection;
+    [SerializeField] private float turnSpeed; // Скорость поворота
+    [SerializeField] private float gravityScale = 9.81f; // Гравитация для игрока
+    private float speed; // Скорость по умолчанию
     private float verticalVelocity;
+
+    private Vector3 movementDirection;
+    public Vector2 moveInput {  get; private set; }
+
     private bool isRunning; //Состояние бега
 
-    [Header("Aim info")]
-    [SerializeField] private Transform aim;
-    [SerializeField] private LayerMask aimLayerMask;
-    public Vector3 lookingDirection;
-
-    private Vector2 moveInput;
-    private Vector2 aimInput;
 
     private void Start()
     {
@@ -44,7 +41,7 @@ public class Player_Movement : MonoBehaviour
     private void Update()
     {
         ApplyMovement();
-        AimTowardsMouse();
+        ApplyRotation();
         AnimatorControllers();
     }
 
@@ -60,20 +57,15 @@ public class Player_Movement : MonoBehaviour
         animator.SetBool("isRunning", playRunAnimation);
     }
 
-    private void AimTowardsMouse()
+    private void ApplyRotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(aimInput);
+        Vector3 lookingDirection = player.aim.GetMouseHitInfo().point - transform.position;
+        lookingDirection.y = 0.0f;
+        lookingDirection.Normalize();
 
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
-        {
-            lookingDirection = hitInfo.point - transform.position;
-            lookingDirection.y = 0.0f;
-            lookingDirection.Normalize();
-
-            transform.forward = lookingDirection;
-
-            aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1.15f, hitInfo.point.z);
-        }
+        //Плавное вращение игрока
+        Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, turnSpeed * Time.deltaTime);
     }
 
     private void ApplyMovement()
@@ -106,9 +98,6 @@ public class Player_Movement : MonoBehaviour
 
         controlls.Character.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
         controlls.Character.Movement.canceled += context => moveInput = Vector2.zero;
-
-        controlls.Character.Aim.performed += context => aimInput = context.ReadValue<Vector2>();
-        controlls.Character.Aim.canceled += controls => aimInput = Vector2.zero;
 
         controlls.Character.Run.performed += context =>
         {
