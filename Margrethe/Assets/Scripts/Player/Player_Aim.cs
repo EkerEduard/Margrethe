@@ -10,6 +10,9 @@ public class Player_Aim : MonoBehaviour
     [Header("Aim control")]
     [SerializeField] private Transform aim;
 
+    [SerializeField] private bool isAimingPrecisly;
+    [SerializeField] private bool isLockingToTarget;
+
     [Header("Camera control")]
     [SerializeField] private Transform cameraTarget;
     [Range(0.5f, 1.0f)]
@@ -33,10 +36,65 @@ public class Player_Aim : MonoBehaviour
 
     private void Update()
     {
-        aim.position = GetMouseHitInfo().point;
-        aim.position = new Vector3(aim.position.x, transform.position.y + 1.15f, aim.position.z);
+        //Свободный прицел
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isAimingPrecisly = !isAimingPrecisly;
+        }
 
+        //Захват цели
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            isLockingToTarget = !isLockingToTarget;
+        }
+
+        UpdateAimPosition();
+        UpdateCameraPosition();
+    }
+
+    public Transform Target()
+    {
+        Transform target = null;
+
+        if (GetMouseHitInfo().transform.GetComponent<Target>() != null)
+        {
+            target = GetMouseHitInfo().transform;
+        }
+
+        return target;
+    }
+
+    private void UpdateCameraPosition()
+    {
         cameraTarget.position = Vector3.Lerp(cameraTarget.position, DesieredCameraPosition(), cameraSensetivity * Time.deltaTime);
+    }
+
+    private void UpdateAimPosition()
+    {
+        Transform target = Target();
+
+        if (target != null && isLockingToTarget)
+        {
+            aim.position = target.position;
+            return;
+        }
+
+        aim.position = GetMouseHitInfo().point;
+
+        if (isAimingPrecisly == false)
+        {
+            aim.position = new Vector3(aim.position.x, transform.position.y + 1.15f, aim.position.z);
+        }
+    }
+
+    public bool CanAimPrecisly()
+    {
+        if (isAimingPrecisly)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private Vector3 DesieredCameraPosition()
