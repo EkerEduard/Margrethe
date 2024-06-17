@@ -11,7 +11,6 @@ public class Player_WeaponController : MonoBehaviour
     [SerializeField] private Transform gunPoint; // Точка создания пули
 
     [SerializeField] private Transform weaponHolder;
-    [SerializeField] private Transform aim;
 
     private void Start()
     {
@@ -31,8 +30,10 @@ public class Player_WeaponController : MonoBehaviour
         GetComponentInChildren<Animator>().SetTrigger("Fire");
     }
 
-    private Vector3 BulletDirection()
+    public Vector3 BulletDirection()
     {
+        Transform aim = player.aim.Aim();
+
         Vector3 direction = (aim.position - gunPoint.position).normalized;
 
         if (player.aim.CanAimPrecisly() == false && player.aim.Target() == null)
@@ -41,10 +42,12 @@ public class Player_WeaponController : MonoBehaviour
         }
 
         weaponHolder.LookAt(aim);
-        gunPoint.LookAt(aim);
+        gunPoint.LookAt(aim); 
 
         return direction;
     }
+
+    public Transform GunPoint() => gunPoint;
 
     //private void OnDrawGizmos()
     //{
