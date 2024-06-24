@@ -5,24 +5,79 @@ using UnityEngine;
 public class Player_WeaponController : MonoBehaviour
 {
     private Player player;
-
     private const float REFERENCE_BULLET_SPEED = 20.0f; // Скорость по умолчанию, из которой выводится формула для массы.
 
+    [SerializeField] private Weapon currentWeapon;
+
+    [Header("Bullet details")]
     [SerializeField] private GameObject bulletPrefab; // Префаб пули
     [SerializeField] private float bulletSpeed; // Скорость пули
     [SerializeField] private Transform gunPoint; // Точка создания пули
 
     [SerializeField] private Transform weaponHolder;
 
+    [Header("Inventory")]
+    [SerializeField] private int maxSlots = 2;
+    [SerializeField] private List<Weapon> weaponSlots;
+
     private void Start()
     {
         player = GetComponent<Player>();
+        AssignInputEvents();
 
-        player.controlls.Character.Fire.performed += context => Shoot();
+        currentWeapon.ammo = currentWeapon.maxAmmo;
+    }
+
+    private void AssignInputEvents()
+    {
+        PlayerControlls controlls = player.controlls;
+
+        controlls.Character.Fire.performed += context => Shoot();
+
+        controlls.Character.EquipSlot1.performed += context => EquipWeapon(0);
+        controlls.Character.EquipSlot2.performed += context => EquipWeapon(1);
+
+        controlls.Character.DropCurrentWeapon.performed += context => DropWeapon();
+    }
+
+    private void EquipWeapon(int i)
+    {
+        currentWeapon = weaponSlots[i];
+    }
+
+    public void PickupWeapon(Weapon newWeapon)
+    {
+        if (weaponSlots.Count >= maxSlots)
+        {
+            Debug.Log("No slots avalible");
+            return;
+        }
+
+        weaponSlots.Add(newWeapon);
+    }
+
+    private void DropWeapon()
+    {
+        if (weaponSlots.Count <= 1)
+        {
+            return;
+        }
+
+        weaponSlots.Remove(currentWeapon);
+
+        currentWeapon = weaponSlots[0];
     }
 
     private void Shoot()
     {
+        if (currentWeapon.ammo <= 0)
+        {
+            Debug.Log("No more ammo");
+            return;
+        }
+
+        currentWeapon.ammo--;
+
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
