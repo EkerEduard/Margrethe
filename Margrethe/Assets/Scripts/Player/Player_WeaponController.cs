@@ -6,6 +6,8 @@ public class Player_WeaponController : MonoBehaviour
 {
     private Player player;
 
+    private const float REFERENCE_BULLET_SPEED = 20.0f; // Скорость по умолчанию, из которой выводится формула для массы.
+
     [SerializeField] private GameObject bulletPrefab; // Префаб пули
     [SerializeField] private float bulletSpeed; // Скорость пули
     [SerializeField] private Transform gunPoint; // Точка создания пули
@@ -23,10 +25,12 @@ public class Player_WeaponController : MonoBehaviour
     {
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
-        newBullet.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
+        Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+
+        rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
+        rbNewBullet.velocity = BulletDirection() * bulletSpeed;
 
         Destroy(newBullet, 5);
-
         GetComponentInChildren<Animator>().SetTrigger("Fire");
     }
 
@@ -42,7 +46,7 @@ public class Player_WeaponController : MonoBehaviour
         }
 
         weaponHolder.LookAt(aim);
-        gunPoint.LookAt(aim); 
+        gunPoint.LookAt(aim);
 
         return direction;
     }
