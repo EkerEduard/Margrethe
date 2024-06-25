@@ -25,21 +25,10 @@ public class Player_WeaponController : MonoBehaviour
         player = GetComponent<Player>();
         AssignInputEvents();
 
-        currentWeapon.ammo = currentWeapon.maxAmmo;
+        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;
     }
 
-    private void AssignInputEvents()
-    {
-        PlayerControlls controlls = player.controlls;
-
-        controlls.Character.Fire.performed += context => Shoot();
-
-        controlls.Character.EquipSlot1.performed += context => EquipWeapon(0);
-        controlls.Character.EquipSlot2.performed += context => EquipWeapon(1);
-
-        controlls.Character.DropCurrentWeapon.performed += context => DropWeapon();
-    }
-
+    #region Slots management - Pickup\ Equip\ Drop Weapon
     private void EquipWeapon(int i)
     {
         currentWeapon = weaponSlots[i];
@@ -67,16 +56,14 @@ public class Player_WeaponController : MonoBehaviour
 
         currentWeapon = weaponSlots[0];
     }
+    #endregion
 
     private void Shoot()
     {
-        if (currentWeapon.ammo <= 0)
+        if (currentWeapon.CanShoot() == false)
         {
-            Debug.Log("No more ammo");
             return;
         }
-
-        currentWeapon.ammo--;
 
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
@@ -106,13 +93,28 @@ public class Player_WeaponController : MonoBehaviour
         return direction;
     }
 
+    public Weapon CurrentWeapon() => currentWeapon;
     public Transform GunPoint() => gunPoint;
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
+    #region Input Events
+    private void AssignInputEvents()
+    {
+        PlayerControlls controlls = player.controlls;
 
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25);
-    //}
+        controlls.Character.Fire.performed += context => Shoot();
+
+        controlls.Character.EquipSlot1.performed += context => EquipWeapon(0);
+        controlls.Character.EquipSlot2.performed += context => EquipWeapon(1);
+
+        controlls.Character.DropCurrentWeapon.performed += context => DropWeapon();
+
+        controlls.Character.Reload.performed += context =>
+        {
+            if (currentWeapon.CanReload())
+            {
+                player.weaponVisuals.PlayReloadAnimation();
+            }
+        };
+    }
+    #endregion
 }
