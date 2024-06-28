@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public enum WeaponType
 {
     Pistol,
@@ -17,6 +19,11 @@ public class Weapon
     public int bulletsInMagazine; // Пуль в магазине
     public int magazineCapacity; // Сколько патрон может быть в магазине
     public int totalReserveAmmo; // Общее колличество патронов для определенного оружия 
+
+    [Range(1.0f, 2.0f)]
+    public float reloadSpeed = 1.0f; // Как быстро персонаж перезаряжает оружие
+    [Range(1.0f, 2.0f)]
+    public float equipmentSpeed = 1.0f; // Как быстро персонаж меняет оружие
 
     public bool CanShoot()
     {
