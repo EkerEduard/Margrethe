@@ -5721,18 +5721,17 @@ MonoBehaviour:
     fireRate: 1
   bulletPrefab: {fileID: 413172558562664340, guid: 2985fb293df0ce6488054dc2895dc825, type: 3}
   bulletSpeed: 20
-  gunPoint: {fileID: 1948855566}
   weaponHolder: {fileID: 1313176055}
   maxSlots: 2
   weaponSlots:
-  - weaponType: 1
+  - weaponType: 0
     bulletsInMagazine: 0
     magazineCapacity: 100
     totalReserveAmmo: 100
     reloadSpeed: 1.015
     equipmentSpeed: 1.025
     fireRate: 5
-  - weaponType: 6
+  - weaponType: 2
     bulletsInMagazine: 0
     magazineCapacity: 30
     totalReserveAmmo: 90

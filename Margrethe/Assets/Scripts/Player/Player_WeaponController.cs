@@ -8,11 +8,11 @@ public class Player_WeaponController : MonoBehaviour
     private const float REFERENCE_BULLET_SPEED = 20.0f; // Скорость по умолчанию, из которой выводится формула для массы.
 
     [SerializeField] private Weapon currentWeapon;
+    private bool weaponReady; // Готовность оружия
 
     [Header("Bullet details")]
     [SerializeField] private GameObject bulletPrefab; // Префаб пули
     [SerializeField] private float bulletSpeed; // Скорость пули
-    [SerializeField] private Transform gunPoint; // Точка создания пули
 
     [SerializeField] private Transform weaponHolder;
 
@@ -28,14 +28,14 @@ public class Player_WeaponController : MonoBehaviour
         Invoke("EquipStartingWeapon", 0.1f);
     }
 
-    #region Slots management - Pickup\ Equip\ Drop Weapon
+    #region Slots management - Pickup\ Equip\ Drop\ Ready Weapon
     private void EquipStartingWeapon() => EquipWeapon(0);
 
     private void EquipWeapon(int i)
     {
-        currentWeapon = weaponSlots[i];
+        SetWeaponReady(false);
 
-        //player.weaponVisuals.SwitchOffWeaponModels();
+        currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
     }
 
@@ -62,10 +62,19 @@ public class Player_WeaponController : MonoBehaviour
 
         EquipWeapon(0);
     }
+
+    public void SetWeaponReady(bool ready) => weaponReady = ready; // Готовность оружия к логическому значению
+    public bool WeaponReady() => weaponReady; // Проверка готовности
     #endregion
 
     private void Shoot()
     {
+        // невозможно стрелять пока оружие не готово 
+        if (WeaponReady() == false)
+        {
+            return;
+        }
+
         if (currentWeapon.CanShoot() == false)
         {
             return;
@@ -73,30 +82,33 @@ public class Player_WeaponController : MonoBehaviour
 
         GameObject newBullet = ObjectPool.instance.GetBullet();
 
-        newBullet.transform.position = gunPoint.position;
-        newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
+        newBullet.transform.position = GunPoint().position;
+        newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         rbNewBullet.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.velocity = BulletDirection() * bulletSpeed;
 
-        GetComponentInChildren<Animator>().SetTrigger("Fire");
+        player.weaponVisuals.PlayFireAnimation();
+    }
+
+    private void Reload()
+    {
+        SetWeaponReady(false);
+        player.weaponVisuals.PlayReloadAnimation();
     }
 
     public Vector3 BulletDirection()
     {
         Transform aim = player.aim.Aim();
 
-        Vector3 direction = (aim.position - gunPoint.position).normalized;
+        Vector3 direction = (aim.position - GunPoint().position).normalized;
 
         if (player.aim.CanAimPrecisly() == false && player.aim.Target() == null)
         {
             direction.y = 0;
         }
-
-        //weaponHolder.LookAt(aim);
-        //gunPoint.LookAt(aim);
 
         return direction;
     }
@@ -117,7 +129,7 @@ public class Player_WeaponController : MonoBehaviour
         return null;
     }
 
-    public Transform GunPoint() => gunPoint;
+    public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
 
     #region Input Events
     private void AssignInputEvents()
@@ -133,9 +145,9 @@ public class Player_WeaponController : MonoBehaviour
 
         controlls.Character.Reload.performed += context =>
         {
-            if (currentWeapon.CanReload())
+            if (currentWeapon.CanReload() && WeaponReady())
             {
-                player.weaponVisuals.PlayReloadAnimation();
+                Reload();
             }
         };
     }
