@@ -25,14 +25,13 @@ public class Weapon
     [Range(1.0f, 2.0f)]
     public float equipmentSpeed = 1.0f; // Как быстро персонаж меняет оружие
 
+    [Space]
+    public float fireRate = 1.0f; // Пуль в секунду
+    private float lastShootTime; // Время последней съемки
+
     public bool CanShoot()
     {
-        return HaveEnoughBullets();
-    }
-
-    private bool HaveEnoughBullets()
-    {
-        if (bulletsInMagazine > 0)
+        if (HaveEnoughBullets() && ReadyToFire())
         {
             bulletsInMagazine--;
             return true;
@@ -41,10 +40,22 @@ public class Weapon
         return false;
     }
 
+    private bool ReadyToFire()
+    {
+        if (Time.time > lastShootTime + 1 / fireRate)
+        {
+            lastShootTime = Time.time;
+            return true;
+        }
+
+        return false;
+    }
+
+    #region Reload methods
     public bool CanReload()
     {
         // Если магазин полон не сможем его перезарядить
-        if(bulletsInMagazine == magazineCapacity)
+        if (bulletsInMagazine == magazineCapacity)
         {
             return false;
         }
@@ -77,4 +88,7 @@ public class Weapon
             totalReserveAmmo = 0;
         }
     }
+
+    private bool HaveEnoughBullets() => bulletsInMagazine > 0;
+    #endregion
 }
