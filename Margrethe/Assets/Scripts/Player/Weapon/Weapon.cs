@@ -11,11 +11,32 @@ public enum WeaponType
     Rifle
 }
 
+public enum ShootType
+{
+    Single,
+    Auto
+}
+
 [System.Serializable] // Для отображения в инспекторе
 public class Weapon
 {
     public WeaponType weaponType;
 
+    [Header("Shooting specifics")]
+    public ShootType shootType;
+    public int bulletsPerShot; // Колличество пуль за выстрел
+    public float defaultFireRate; // Скорострельность по умолчанию 
+    public float fireRate = 1.0f; // Пуль в секунду
+    private float lastShootTime; // Время последней съемки
+
+    [Header("Burst fire")]
+    public bool burstAvalible; // Режим стрельбы 
+    public bool burstActive; // Активация режима
+    public int burstBulletsPerShot; // Колличество пуль на выстрел в режиме стрельбы 
+    public float burstFireRate; // Скорострельность в режиме стрельбы
+    public float burstFireDelay = 0.1f; // Задержка посде выстрела
+
+    [Header("Magazine details")]
     public int bulletsInMagazine; // Пуль в магазине
     public int magazineCapacity; // Сколько патрон может быть в магазине
     public int totalReserveAmmo; // Общее колличество патронов для определенного оружия 
@@ -25,20 +46,84 @@ public class Weapon
     [Range(1.0f, 2.0f)]
     public float equipmentSpeed = 1.0f; // Как быстро персонаж меняет оружие
 
-    [Space]
-    public float fireRate = 1.0f; // Пуль в секунду
-    private float lastShootTime; // Время последней съемки
+    [Header("Spread ")]
+    public float baseSpread = 1.0f; // Стандартный\ базовый разброс
+    public float currentSpread = 2.0f; // Текущий разброс пуль
+    public float maximumSpread = 3.0f; // Максимальный разброс
 
-    public bool CanShoot()
+    public float spreadIncreaseRate = 0.15f; // Увелечение разброса
+
+    private float lastSpreadUpdateTime; // Время последнего обновления разброса
+    private float spreadCooldown = 1.0f; // Перезарядка разброса
+
+    #region Spread methods
+    public Vector3 ApplySpread(Vector3 originalDirection)
     {
-        if (HaveEnoughBullets() && ReadyToFire())
+        UpdateSpread();
+
+        float randomizedValue = Random.Range(-currentSpread, currentSpread);
+
+        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue, randomizedValue);
+
+        return spreadRotation * originalDirection;
+    }
+
+    private void UpdateSpread()
+    {
+        if (Time.time > lastSpreadUpdateTime + spreadCooldown)
         {
-            bulletsInMagazine--;
+            currentSpread = baseSpread;
+        }
+        else
+        {
+            IncreaseSpread();
+        }
+
+        lastSpreadUpdateTime = Time.time;
+    }
+
+    private void IncreaseSpread()
+    {
+        currentSpread = Mathf.Clamp(currentSpread + spreadIncreaseRate, baseSpread, maximumSpread);
+    }
+    #endregion
+
+    #region Burst methods
+    public bool BurstActivated()
+    {
+        if (weaponType == WeaponType.Shotgun)
+        {
+            burstFireDelay = 0;
             return true;
         }
 
-        return false;
+        return burstActive;
     }
+
+    public void ToggleBurst()
+    {
+        if (burstAvalible == false)
+        {
+            return;
+        }
+
+        burstActive = !burstActive;
+
+        if (burstActive)
+        {
+            bulletsPerShot = burstBulletsPerShot;
+            fireRate = burstFireRate;
+        }
+        else
+        {
+            bulletsPerShot = 1;
+            fireRate = defaultFireRate;
+        }
+    }
+
+    #endregion
+
+    public bool CanShoot() => HaveEnoughBullets() && ReadyToFire();
 
     private bool ReadyToFire()
     {

@@ -3450,12 +3450,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     weaponType: 3
+    shootType: 0
+    bulletsPerShot: 0
+    defaultFireRate: 0
+    fireRate: 1
+    burstAvalible: 0
+    burstActive: 0
+    burstBulletsPerShot: 0
+    burstFireRate: 0
+    burstFireDelay: 1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
     reloadSpeed: 0
     equipmentSpeed: 1
-    fireRate: 1
+    baseSpread: 0
+    currentSpread: 0
+    maximumSpread: 3
+    spreadIncreaseRate: 0.15
 --- !u!1 &796278881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5713,31 +5725,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWeapon:
     weaponType: 3
+    shootType: 0
+    bulletsPerShot: 0
+    defaultFireRate: 0
+    fireRate: 1
+    burstAvalible: 0
+    burstActive: 0
+    burstBulletsPerShot: 0
+    burstFireRate: 0
+    burstFireDelay: 1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
     reloadSpeed: 1
     equipmentSpeed: 1
-    fireRate: 1
+    baseSpread: 0
+    currentSpread: 0
+    maximumSpread: 3
+    spreadIncreaseRate: 0.15
   bulletPrefab: {fileID: 413172558562664340, guid: 2985fb293df0ce6488054dc2895dc825, type: 3}
   bulletSpeed: 20
   weaponHolder: {fileID: 1313176055}
   maxSlots: 2
   weaponSlots:
-  - weaponType: 0
-    bulletsInMagazine: 0
+  - weaponType: 5
+    shootType: 0
+    bulletsPerShot: 5
+    defaultFireRate: 1
+    fireRate: 1
+    burstAvalible: 0
+    burstActive: 0
+    burstBulletsPerShot: 0
+    burstFireRate: 0
+    burstFireDelay: 0
+    bulletsInMagazine: 100
     magazineCapacity: 100
-    totalReserveAmmo: 100
+    totalReserveAmmo: 1000
     reloadSpeed: 1.015
     equipmentSpeed: 1.025
-    fireRate: 5
+    baseSpread: 15
+    currentSpread: 15
+    maximumSpread: 3
+    spreadIncreaseRate: 0.15
   - weaponType: 2
-    bulletsInMagazine: 0
-    magazineCapacity: 30
-    totalReserveAmmo: 90
+    shootType: 1
+    bulletsPerShot: 1
+    defaultFireRate: 10
+    fireRate: 10
+    burstAvalible: 1
+    burstActive: 0
+    burstBulletsPerShot: 3
+    burstFireRate: 1.5
+    burstFireDelay: 0.1
+    bulletsInMagazine: 100
+    magazineCapacity: 100
+    totalReserveAmmo: 1000
     reloadSpeed: 1.02
     equipmentSpeed: 1.015
-    fireRate: 1
+    baseSpread: 1
+    currentSpread: 1
+    maximumSpread: 3
+    spreadIncreaseRate: 0.15
 --- !u!114 &1256162252
 MonoBehaviour:
   m_ObjectHideFlags: 0
