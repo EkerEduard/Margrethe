@@ -35,12 +35,6 @@ public class Player_WeaponController : MonoBehaviour
         {
             Shoot();
         }
-
-        // Временная мера
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            currentWeapon.ToggleBurst();
-        }
     }
 
     #region Slots management - Pickup\ Equip\ Drop\ Ready Weapon
@@ -48,6 +42,11 @@ public class Player_WeaponController : MonoBehaviour
 
     private void EquipWeapon(int i)
     {
+        if (i >= weaponSlots.Count)
+        {
+            return;
+        }
+
         SetWeaponReady(false);
 
         currentWeapon = weaponSlots[i];
@@ -175,13 +174,12 @@ public class Player_WeaponController : MonoBehaviour
     }
 
     public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
-    public Weapon CurrentWeapon() => currentWeapon;
 
-    public Weapon BackupWeapon()
+    public Weapon WeaponInSlots(WeaponType weaponType)
     {
         foreach (Weapon weapon in weaponSlots)
         {
-            if (weapon != currentWeapon)
+            if (weapon.weaponType == weaponType)
             {
                 return weapon;
             }
@@ -189,6 +187,8 @@ public class Player_WeaponController : MonoBehaviour
 
         return null;
     }
+
+    public Weapon CurrentWeapon() => currentWeapon;
 
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
 
@@ -202,6 +202,11 @@ public class Player_WeaponController : MonoBehaviour
 
         controlls.Character.EquipSlot1.performed += context => EquipWeapon(0);
         controlls.Character.EquipSlot2.performed += context => EquipWeapon(1);
+        controlls.Character.EquipSlot3.performed += context => EquipWeapon(2);
+        controlls.Character.EquipSlot4.performed += context => EquipWeapon(3);
+        controlls.Character.EquipSlot5.performed += context => EquipWeapon(4);
+        controlls.Character.EquipSlot6.performed += context => EquipWeapon(5);
+        controlls.Character.EquipSlot7.performed += context => EquipWeapon(6);
 
         controlls.Character.DropCurrentWeapon.performed += context => DropWeapon();
 
@@ -212,6 +217,8 @@ public class Player_WeaponController : MonoBehaviour
                 Reload();
             }
         };
+
+        controlls.Character.ToggleWeaponMode.performed += context => currentWeapon.ToggleBurst();
     }
     #endregion
 }
