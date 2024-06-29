@@ -41,11 +41,6 @@ public class Weapon
     public int magazineCapacity; // Сколько патрон может быть в магазине
     public int totalReserveAmmo; // Общее колличество патронов для определенного оружия 
 
-    [Range(1.0f, 2.0f)]
-    public float reloadSpeed = 1.0f; // Как быстро персонаж перезаряжает оружие
-    [Range(1.0f, 2.0f)]
-    public float equipmentSpeed = 1.0f; // Как быстро персонаж меняет оружие
-
     [Header("Spread ")]
     public float baseSpread = 1.0f; // Стандартный\ базовый разброс
     public float currentSpread = 2.0f; // Текущий разброс пуль
@@ -55,6 +50,15 @@ public class Weapon
 
     private float lastSpreadUpdateTime; // Время последнего обновления разброса
     private float spreadCooldown = 1.0f; // Перезарядка разброса
+
+    [Range(1.0f, 2.0f)]
+    public float reloadSpeed = 1.0f; // Как быстро персонаж перезаряжает оружие
+    [Range(1.0f, 2.0f)]
+    public float equipmentSpeed = 1.0f; // Как быстро персонаж меняет оружие
+    [Range(2.0f, 12.0f)]
+    public float gunDistance = 4.0f; // Дальность оружия
+    [Range(3.0f, 8.0f)]
+    public float cameraDistance = 6.0f; // Расстояние камеры до игрока в зависимости от выбранного оружия
 
     #region Spread methods
     public Vector3 ApplySpread(Vector3 originalDirection)

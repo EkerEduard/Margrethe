@@ -276,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 40135286}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: -0.045, y: 4.4641023, z: -0.85099983}
+  m_LocalPosition: {x: -0.045, y: 1.8660259, z: 0.6489999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 10
+  m_CameraDistance: 7
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -3462,12 +3462,14 @@ MonoBehaviour:
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
-    reloadSpeed: 0
-    equipmentSpeed: 1
     baseSpread: 0
     currentSpread: 0
     maximumSpread: 3
     spreadIncreaseRate: 0.15
+    reloadSpeed: 0
+    equipmentSpeed: 1
+    gunDistance: 6
+    cameraDistance: 0
 --- !u!1 &796278881
 GameObject:
   m_ObjectHideFlags: 0
@@ -3952,6 +3954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 860076369}
+  - component: {fileID: 860076370}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -3976,6 +3979,19 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &860076370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860076368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b929fdad80e9bf344aceb9b5cb1a5c36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceChangeRate: 2
 --- !u!1 &860785938
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4283,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0, z: -0, w: 0.8660254}
-  m_LocalPosition: {x: -0.045, y: 4.4641023, z: -0.85099983}
+  m_LocalPosition: {x: -0.045, y: 1.8660259, z: 0.6489999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5737,12 +5753,14 @@ MonoBehaviour:
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
-    reloadSpeed: 1
-    equipmentSpeed: 1
     baseSpread: 0
     currentSpread: 0
     maximumSpread: 3
     spreadIncreaseRate: 0.15
+    reloadSpeed: 1
+    equipmentSpeed: 1
+    gunDistance: 6
+    cameraDistance: 3
   bulletPrefab: {fileID: 413172558562664340, guid: 2985fb293df0ce6488054dc2895dc825, type: 3}
   bulletSpeed: 20
   weaponHolder: {fileID: 1313176055}
@@ -5761,12 +5779,14 @@ MonoBehaviour:
     bulletsInMagazine: 100
     magazineCapacity: 100
     totalReserveAmmo: 1000
-    reloadSpeed: 1.015
-    equipmentSpeed: 1.025
     baseSpread: 15
     currentSpread: 15
     maximumSpread: 3
     spreadIncreaseRate: 0.15
+    reloadSpeed: 1.015
+    equipmentSpeed: 1.025
+    gunDistance: 2.5
+    cameraDistance: 5
   - weaponType: 2
     shootType: 1
     bulletsPerShot: 1
@@ -5780,12 +5800,14 @@ MonoBehaviour:
     bulletsInMagazine: 100
     magazineCapacity: 100
     totalReserveAmmo: 1000
-    reloadSpeed: 1.02
-    equipmentSpeed: 1.015
     baseSpread: 1
     currentSpread: 1
     maximumSpread: 3
     spreadIncreaseRate: 0.15
+    reloadSpeed: 1.02
+    equipmentSpeed: 1.015
+    gunDistance: 6
+    cameraDistance: 7
 --- !u!114 &1256162252
 MonoBehaviour:
   m_ObjectHideFlags: 0

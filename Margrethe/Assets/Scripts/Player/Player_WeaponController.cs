@@ -52,6 +52,8 @@ public class Player_WeaponController : MonoBehaviour
 
         currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
+
+        CameraManager.instance.ChangeCameraDistance(currentWeapon.cameraDistance);
     }
 
     public void PickupWeapon(Weapon newWeapon)
@@ -142,6 +144,9 @@ public class Player_WeaponController : MonoBehaviour
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
+        bulletScript.BulletSetup(currentWeapon.gunDistance);
 
         Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
 
