@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
     {
         if (trailRenderer.time < 0)
         {
-            ObjectPool.instance.ReturnBullet(gameObject);
+            ReturnBulletToPool();
         }
     }
 
@@ -71,15 +71,22 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         CreateImpactFX(collision);
-        ObjectPool.instance.ReturnBullet(gameObject);
+        ReturnBulletToPool();
     }
+
+    private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(gameObject);
+
 
     private void CreateImpactFX(Collision collision)
     {
-        ContactPoint contact = collision.contacts[0];
+        if (collision.contacts.Length > 0)
+        {
+            ContactPoint contact = collision.contacts[0];
 
-        GameObject newImpactFX = Instantiate(bulletImpactFX, contact.point, Quaternion.LookRotation(contact.normal));
+            GameObject newImpactFX = ObjectPool.instance.GetObject(bulletImpactFX);
+            newImpactFX.transform.position = contact.point;
 
-        Destroy(newImpactFX, 1.0f); // ’мм... чуть позже попробовать 0.5
+            ObjectPool.instance.ReturnObject(newImpactFX, 1.0f);
+        }
     }
 }

@@ -7,6 +7,7 @@ public class Player_WeaponController : MonoBehaviour
     private Player player;
     private const float REFERENCE_BULLET_SPEED = 20.0f; // —корость по умолчанию, из которой выводитс€ формула дл€ массы.
 
+    [SerializeField] private Weapon_Data defaultWeaponData;
     [SerializeField] private Weapon currentWeapon;
     private bool weaponReady; // √отовность оружи€
     private bool isShooting;
@@ -38,7 +39,12 @@ public class Player_WeaponController : MonoBehaviour
     }
 
     #region Slots management - Pickup\ Equip\ Drop\ Ready Weapon
-    private void EquipStartingWeapon() => EquipWeapon(0);
+    private void EquipStartingWeapon()
+    {
+        weaponSlots[0] = new Weapon(defaultWeaponData);
+
+        EquipWeapon(0);
+    }
 
     private void EquipWeapon(int i)
     {
@@ -137,7 +143,7 @@ public class Player_WeaponController : MonoBehaviour
     {
         currentWeapon.bulletsInMagazine--;
 
-        GameObject newBullet = ObjectPool.instance.GetBullet();
+        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
 
         newBullet.transform.position = GunPoint().position;
         newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);

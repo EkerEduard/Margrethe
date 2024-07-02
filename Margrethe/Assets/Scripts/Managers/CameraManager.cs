@@ -11,9 +11,9 @@ public class CameraManager : MonoBehaviour
     private CinemachineFramingTransposer transposer;
 
     [Header("Camera distance")]
-    [SerializeField] private bool canChangeCameraDistance;
-    [SerializeField] private float distanceChangeRate;
-    private float targetCameraDistance;
+    [SerializeField] private bool canChangeCameraDistance; // ћожно ли мен€ть дистанцию камеры
+    [SerializeField] private float distanceChangeRate; // —корость изменени€ дистанции камеры
+    private float targetCameraDistance; // ÷елева€ дистанци€ камеры
 
     private void Awake()
     {
@@ -43,13 +43,16 @@ public class CameraManager : MonoBehaviour
             return;
         }
 
+        // ѕолучить текущую дистанцию камеры
         float currentDistance = transposer.m_CameraDistance;
 
+        // ≈сли текуща€ дистанци€ почти равна целевой, выйти из метода
         if (Mathf.Abs(targetCameraDistance - currentDistance) < 0.01f)
         {
             return;
         }
 
+        // ѕлавно изменить дистанцию камеры к целевой дистанции с заданной скоростью
         transposer.m_CameraDistance = Mathf.Lerp(currentDistance, targetCameraDistance, distanceChangeRate * Time.deltaTime);
     }
 
