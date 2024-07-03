@@ -3,20 +3,12 @@ using UnityEngine;
 public enum WeaponType
 {
     Pistol,
-    PistolRed,
-    PistolBlue,
     Revolver,
     Tommygun,
-    TommygunRed,
     AutoRifle,
-    AutoRifleBlue,
-    AutoRifleRed,
-    MachinegunBlue,
-    MachinegunRed,
+    Machinegun,
     Shotgun,
-    ShotgunRed,
-    Rifle,
-    RifleGreen
+    Rifle
 }
 
 public enum ShootType

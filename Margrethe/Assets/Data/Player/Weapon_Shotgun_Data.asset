@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea9450dd731b12840bdd0de3b6e2e6ce, type: 3}
   m_Name: Weapon_Shotgun_Data
   m_EditorClassIdentifier: 
-  weaponName: Shotgun d7
-  weaponType: 0
-  shootType: 0
-  bulletsPerShot: 1
-  fireRate: 0
-  bulletsInMagazine: 0
-  magazineCapacity: 0
-  totalReserveAmmo: 0
+  weaponName: Iron Beast
+  weaponType: 5
+  shootType: 1
+  bulletsPerShot: 5
+  fireRate: 1
+  bulletsInMagazine: 40
+  magazineCapacity: 40
+  totalReserveAmmo: 9999999
   burstAvalible: 0
   burstActive: 0
   burstBulletsPerShot: 0
   burstFireRate: 0
   burstFireDelay: 0.1
-  baseSpread: 0
-  maxSpread: 0
+  baseSpread: 12
+  maxSpread: 12
   spreadIncreaseRate: 0.15
   reloadSpeed: 1
   equipmentSpeed: 1
-  gunDistance: 4
+  gunDistance: 6
   cameraDistance: 6

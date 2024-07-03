@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9450dd731b12840bdd0de3b6e2e6ce, type: 3}
+  m_Name: Weapon_Auto-Rifle_Data
+  m_EditorClassIdentifier: 
+  weaponName: Stormbreaker
+  weaponType: 3
+  shootType: 1
+  bulletsPerShot: 1
+  fireRate: 6.5
+  bulletsInMagazine: 30
+  magazineCapacity: 30
+  totalReserveAmmo: 9999999
+  burstAvalible: 1
+  burstActive: 0
+  burstBulletsPerShot: 3
+  burstFireRate: 1.5
+  burstFireDelay: 0.1
+  baseSpread: 0.4
+  maxSpread: 2
+  spreadIncreaseRate: 0.15
+  reloadSpeed: 1
+  equipmentSpeed: 1
+  gunDistance: 6
+  cameraDistance: 6

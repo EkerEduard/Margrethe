@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea9450dd731b12840bdd0de3b6e2e6ce, type: 3}
-  m_Name: Weapon_Pistol_Data
+  m_Name: Weapon_Rifle_Data
   m_EditorClassIdentifier: 
-  weaponName: Ratatatat
-  weaponType: 0
+  weaponName: Viper's Gaze
+  weaponType: 6
   shootType: 0
   bulletsPerShot: 1
-  fireRate: 4
-  bulletsInMagazine: 9
-  magazineCapacity: 9
-  totalReserveAmmo: 2147483647
+  fireRate: 1.5
+  bulletsInMagazine: 10
+  magazineCapacity: 10
+  totalReserveAmmo: 999999
   burstAvalible: 0
   burstActive: 0
   burstBulletsPerShot: 0
   burstFireRate: 0
   burstFireDelay: 0.1
-  baseSpread: 0.25
-  maxSpread: 2
-  spreadIncreaseRate: 0.15
+  baseSpread: 0.1
+  maxSpread: 0.5
+  spreadIncreaseRate: 0.1
   reloadSpeed: 1
   equipmentSpeed: 1
   gunDistance: 6

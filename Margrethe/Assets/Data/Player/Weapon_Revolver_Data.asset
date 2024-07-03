@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea9450dd731b12840bdd0de3b6e2e6ce, type: 3}
-  m_Name: Weapon_Auto-Rifle_Data
+  m_Name: Weapon_Revolver_Data
   m_EditorClassIdentifier: 
-  weaponName: Kalas
-  weaponType: 6
-  shootType: 1
+  weaponName: Thunderbolt
+  weaponType: 1
+  shootType: 0
   bulletsPerShot: 1
-  fireRate: 8
-  bulletsInMagazine: 30
-  magazineCapacity: 30
-  totalReserveAmmo: 999999999
-  burstAvalible: 1
+  fireRate: 2
+  bulletsInMagazine: 6
+  magazineCapacity: 6
+  totalReserveAmmo: 99999
+  burstAvalible: 0
   burstActive: 0
-  burstBulletsPerShot: 3
-  burstFireRate: 1.5
+  burstBulletsPerShot: 0
+  burstFireRate: 0
   burstFireDelay: 0.1
-  baseSpread: 0.5
+  baseSpread: 0.1
   maxSpread: 2
-  spreadIncreaseRate: 0.15
-  reloadSpeed: 1.01
-  equipmentSpeed: 1.01
+  spreadIncreaseRate: 0.3
+  reloadSpeed: 1
+  equipmentSpeed: 1
   gunDistance: 6
   cameraDistance: 6
