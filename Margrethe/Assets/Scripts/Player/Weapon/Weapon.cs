@@ -56,6 +56,8 @@ public class Weapon
     public float gunDistance { get; private set; } // Дальность оружия
     public float cameraDistance { get; private set; } // Расстояние камеры до игрока в зависимости от выбранного оружия
 
+    public Weapon_Data weaponData { get; private set; } // служит данными об оружии по умолчанию
+
     public Weapon(Weapon_Data weaponData)
     {
         fireRate = weaponData.fireRate;
@@ -84,6 +86,7 @@ public class Weapon
         cameraDistance = weaponData.cameraDistance;
 
         defaultFireRate = fireRate;
+        this.weaponData = weaponData;
     }
 
     #region Spread methods

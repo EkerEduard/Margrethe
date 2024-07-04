@@ -22,6 +22,8 @@ public class Player_WeaponController : MonoBehaviour
     [SerializeField] private int maxSlots = 2;
     [SerializeField] private List<Weapon> weaponSlots;
 
+    [SerializeField] private GameObject weaponPickupPrefab;
+
     private void Start()
     {
         player = GetComponent<Player>();
@@ -61,15 +63,25 @@ public class Player_WeaponController : MonoBehaviour
         CameraManager.instance.ChangeCameraDistance(currentWeapon.cameraDistance);
     }
 
-    public void PickupWeapon(Weapon_Data newWeaponData)
+    public void PickupWeapon(Weapon newWeapon)
     {
-        if (weaponSlots.Count >= maxSlots)
+        if (WeaponInSlots(newWeapon.weaponType) != null)
         {
-            Debug.Log("No slots avalible");
+            WeaponInSlots(newWeapon.weaponType).totalReserveAmmo += newWeapon.bulletsInMagazine;
             return;
         }
 
-        Weapon newWeapon = new Weapon(newWeaponData);
+        if (weaponSlots.Count >= maxSlots && newWeapon.weaponType != currentWeapon.weaponType)
+        {
+            int weaponIndex = weaponSlots.IndexOf(currentWeapon);
+
+            player.weaponVisuals.SwitchOffWeaponModels();
+            weaponSlots[weaponIndex] = newWeapon;
+
+            CreateWeaponOnTheGround();
+            EquipWeapon(weaponIndex);
+            return;
+        }
 
         weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnWeaponBackupModels();
@@ -82,9 +94,16 @@ public class Player_WeaponController : MonoBehaviour
             return;
         }
 
-        weaponSlots.Remove(currentWeapon);
+        CreateWeaponOnTheGround();
 
+        weaponSlots.Remove(currentWeapon);
         EquipWeapon(0);
+    }
+
+    private void CreateWeaponOnTheGround()
+    {
+        GameObject droppedWeapon = ObjectPool.instance.GetObject(weaponPickupPrefab);
+        droppedWeapon.GetComponent<Pickup_Weapon>()?.SetupPickupWeapon(currentWeapon, transform);
     }
 
     public void SetWeaponReady(bool ready) => weaponReady = ready; // √отовность оружи€ к логическому значению

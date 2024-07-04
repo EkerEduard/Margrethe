@@ -11,6 +11,9 @@ public class ObjectPool : MonoBehaviour
     // Словарь, где ключом является префаб, а значением - очередь объектов этого типа
     private Dictionary<GameObject, Queue<GameObject>> poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
 
+    [Header("To Initialize")]
+    [SerializeField] private GameObject weaponPickup;
+
     private void Awake()
     {
         if (instance == null)
@@ -21,6 +24,11 @@ public class ObjectPool : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        InititalizeNewPool(weaponPickup);
     }
 
     // Метод для получения объекта из пула
