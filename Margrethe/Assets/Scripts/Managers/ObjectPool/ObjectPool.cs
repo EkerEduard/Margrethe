@@ -13,6 +13,7 @@ public class ObjectPool : MonoBehaviour
 
     [Header("To Initialize")]
     [SerializeField] private GameObject weaponPickup;
+    [SerializeField] private GameObject ammoPickup;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class ObjectPool : MonoBehaviour
     private void Start()
     {
         InititalizeNewPool(weaponPickup);
+        InititalizeNewPool(ammoPickup);
     }
 
     // Метод для получения объекта из пула
